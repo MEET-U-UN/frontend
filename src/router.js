@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import SignUp from "./views/SignUp";
 import NewRole from "./views/NewRole";
+import initPage from "./views/initPage";
 
 Vue.use(Router);
 
@@ -18,6 +19,11 @@ export default new Router({
       path: "/registro/nuevo-rol",
       name: "newRole",
       component: NewRole
+    },
+    {
+      path: "/init/",
+      name: "initPage",
+      component: initPage
     }
   ]
 })
