@@ -66,7 +66,7 @@
                                 </form>
                             </div>
                             <div class="modal-footer" style="background-color: #9BE137">
-                                <button type="button" class="btn btn-success" data-dismiss="modal">Registrarse</button>
+                                <button type="button submit" class="btn btn-success" data-dismiss="modal">Registrarse</button>
                             </div>
                         </div>
 
@@ -87,23 +87,23 @@
 
                         <div class="modal-content">
                             <div class="modal-header" style="background-color: #9BE137">
-                                <h5 class="modal-title text-center" style="color:black">REGISTRO</h5>
+                                <h5 class="modal-title text-center" style="color:black">INICIO SESIÓN</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                             </div>
                             <div class="modal-body" style="background-color: #9BE137">
-                                <form class=" rounded form-inline" @submit="signUp">
+                                <form class=" rounded form-inline" @submit="logIn">
 
                                     <div class="form-group col-12">
                                         <label class="custom-label col-md-3" for="username">Correo Electronico</label>
-                                        <input id="emailLogin" class="form-control col-12 col-sm-10 col-md-7 offset-sm-1" type="text"
-                                               placeholder="Correo" v-model="email" required/>
+                                        <input id="emailL" class="form-control col-12 col-sm-10 col-md-7 offset-sm-1" type="text"
+                                               placeholder="Correo" v-model="emailL" required/>
                                     </div>
 
                                     <div class="form-group col-12">
                                         <label class="custom-label col-md-3 display" for="password">Contrase&ntilde;a</label>
-                                        <input id="passwordLogin" class="form-control col-12 col-sm-10 col-md-7 offset-sm-1" type="password"
-                                               placeholder="Contraseña" v-model="password" required/>
+                                        <input id="passwordL" class="form-control col-12 col-sm-10 col-md-7 offset-sm-1" type="password"
+                                               placeholder="Contraseña" v-model="passwordL" required/>
                                     </div>
 
                                     <div class="col-12 col-sm-6 col-md-5 offset-md-2 text-center mb-3">
@@ -116,7 +116,7 @@
                                 </form>
                             </div>
                             <div class="modal-footer" style="background-color: #9BE137">
-                                <button type="button" class="btn btn-success" data-dismiss="modal">Iniciar Sesión</button>
+                                <button type="button submit" class="btn btn-success" data-dismiss="modal">Iniciar Sesión</button>
                             </div>
                         </div>
 
@@ -135,8 +135,98 @@
     import axios from 'axios'
 
     const path = '/init/';
+
     export default {
-        name: "initPage"
+        name: "initPage",
+        data( ){
+            return{
+                names: '',
+                surnames: '',
+                username: '',
+                email: '',
+                password: '',
+                cPassword: '',
+                response: null,
+                emailL: '',
+                passwordL: ''
+            }
+        },
+        beforeCreate( ){
+            const rolesPath = '/roles';
+            axios
+                .get( this.$store.state.backURL + rolesPath )
+                .then( response => {
+                    if( response.status !== 200 ){
+                        alert( "Error en la petición. Intente nuevamente" )
+                    }else{
+                        this.roles = response.data;
+                        console.log( this.roles );
+                    }
+                }).catch( response => {
+                alert( "No es posible conectar con el backend en este momento" );
+                console.log( response );
+            });
+        },
+        methods:{
+            signUp( event ){
+                if( this.password !== this.cPassword ){
+                    event.preventDefault( );
+                    return;
+                }
+                axios
+                    .post( this.$store.state.backURL + path + this.role,
+                        {
+                            names: this.names.trim( ),
+                            surnames: this.surnames.trim( ),
+                            username: this.username.trim( ),
+                            email: this.email.trim(),
+                            password: this.password
+                        }
+                    ).then( response => {
+                    if( response.status !== 201 ){
+                        alert( "Error en el almacenamiento del usuario" )
+                    }else{
+                        alert( "Usuario registrado correctamente" )
+                    }
+                }).catch( error =>{
+                    if( error.response.status === 400 ){
+                        alert( "Parece que ya existe un usuario con el nombre de usuario \"" + this.username + "\"" );
+                    }else{
+                        alert( "Error en la aplicación" );
+                    }
+                    console.log( error );
+                });
+                event.preventDefault( );
+                return true;
+            },
+
+            logIn( event ){
+
+                axios
+                    .get( this.$store.state.backURL + path + this.role,
+                        {
+
+                            emailL: this.emailL.trim(),
+                            passwordL: this.passwordL
+                        }
+                    ).then( response => {
+                    if( response.status !== 201 ){
+                        alert( "Error en el inicio de sesión" )
+                    }else{
+                        alert( "Inicio de Sesión Exitoso" )
+                    }
+                }).catch( error =>{
+                    if( error.response.status === 400 ){
+                        alert( "Parece que el ususario y/o contraseña son incorrectos \"" + this.username + "\"" );
+                    }else{
+                        alert( "Error en la aplicación" );
+                    }
+                    console.log( error );
+                });
+                event.preventDefault( );
+                return true;
+            }
+        }
     }
 </script>
 
