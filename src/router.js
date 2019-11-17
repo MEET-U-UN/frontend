@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import SignUp from "./views/SignUp";
 import NewRole from "./views/NewRole";
 import initPage from "./views/initPage";
+import mainPage from "./views/mainPage";
 
 Vue.use(Router);
 
@@ -24,6 +25,11 @@ export default new Router({
       path: "/init/",
       name: "initPage",
       component: initPage
+    },
+    {
+      path: "/mainPage/",
+      name: "mainPage",
+      component: mainPage
     }
   ]
 })
