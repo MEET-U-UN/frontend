@@ -45,7 +45,14 @@
                     </ul>
                 </div>
 
-
+                <div class="container ">
+                    <div class="d-flex justify-content-end ">
+                        <div class="searchbar">
+                            <input class="search_input" type="text" name="" placeholder="Search...">
+                            <a href="#" class="search_icon"><i class="fa fa-search"></i></a>
+                        </div>
+                    </div>
+                </div>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="plans" role="tabpanel" aria-labelledby="nav-home-tab">
 
@@ -364,5 +371,49 @@
     .planCard{
         background-color: #71B64B;
 
+    }
+
+    .searchbar{
+        margin-bottom: auto;
+        margin-top: auto;
+        height: 60px;
+        background-color: white;
+        border-radius: 30px;
+        padding: 10px;
+    }
+
+    .search_input{
+        color: black;
+        border: 0;
+        outline: 0;
+        background: none;
+        width: 0;
+        caret-color:transparent;
+        line-height: 40px;
+        transition: width 0.4s linear;
+    }
+
+    .searchbar:hover > .search_input{
+        padding: 0 10px;
+        width: 450px;
+        caret-color:black;
+        transition: width 0.4s linear;
+    }
+
+    .searchbar:hover > .search_icon{
+        background: #BEDB66;
+        color: black;
+    }
+
+    .search_icon{
+        height: 40px;
+        width: 40px;
+        float: right;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        color:#BEDB66;
+        text-decoration:none;
     }
 </style>
